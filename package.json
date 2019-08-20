@@ -1,0 +1,22 @@
+{
+  "name": "bamazon_customer",
+  "version": "1.0.0",
+  "description": "An Amazon-like storefront using MySQL",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rainbojack1/bamazon_customer.git"
+  },
+  "author": "Jesselyn Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rainbojack1/bamazon_customer/issues"
+  },
+  "homepage": "https://github.com/rainbojack1/bamazon_customer#readme",
+  "dependencies": {
+    "mysql": "^2.17.1"
+  }
+}

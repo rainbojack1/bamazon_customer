@@ -7,7 +7,8 @@ CREATE TABLE products(
     product_name VARCHAR(75) NOT NULL,
     department_name VARCHAR(50),
     price DECIMAL(10,2) NOT NULL,
-    stock_quantity INT (10) NOT NULL
+    stock_quantity INT (10) NOT NULL,
+    PRIMARY KEY (item_id)
 );
 
 INSERT INTO products(product_name, department_name, price, stock_quantity)
