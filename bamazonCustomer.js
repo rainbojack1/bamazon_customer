@@ -58,6 +58,7 @@ function purchase(){
 
         if(amount > res[0].stock_quantity){
             console.log("I'm sorry, there isn't enough for you to buy " + amount + " of " + res[0].product_name);
+            response.howManyToBuy = 0;
             purchase();
         }else{
             placeOrder(amount, itemId, res[0].product_name, res[0].price);
@@ -75,7 +76,7 @@ function placeOrder(amount, itemId, name, price){
     //display the total cost
     let total = Number(price * amount);
     connection.query("UPDATE products SET stock_quantity = (stock_quantity -?) WHERE item_id = ?", [amount, itemId], function(err, res){
-        console.log("You are buying " + amount + " of " + name + " for $" + total + ".");
+        console.log("You are buying " + amount + " of " + name + " for $" + total + ".\n");
         remainingProduct(itemId);
     });
 }
@@ -84,5 +85,29 @@ function remainingProduct(itemId){
     let query = connection.query("SELECT * FROM products WHERE item_id=?", [itemId], function(err, res){
         if(err) throw err;
         console.log("Product remaining:\nID: " + res[0].item_id + "\nProduct: " + res[0].product_name + "\nDepartment: " + res[0].department_name + "\nPrice: " + res[0].price + "\nQuantity: " + res[0].stock_quantity + "\n");
+
+        end();
+    });
+}
+
+function end(){
+    inquirer
+    .prompt([
+      {
+          name: "startOver",
+          type: "list",
+          message: "Would you like to purchase something else?",
+          choices: ["yes", "no"]
+      }
+    ])
+    .then((response) => {
+      if(response.startOver === "yes"){
+          findAll();
+      }else{
+        connection.end();
+      }
+    })
+    .catch((err) => {
+        console.error(err.message);
     });
 }
