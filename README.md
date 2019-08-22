@@ -9,6 +9,10 @@ Node.js, MySQL, Inquirer
 
 Create an Amazon-like storefront using MySQL and Inquirer. The app will take in orders from customers and deplete stock from the store's inventory. The app  can also track product sales across your store's departments and then provide a summary of the highest-grossing departments in the store.
 
+## Before You Begin
+
+Run "npm install" to download the dependencies for this project.
+
 ## Instructions
 
 1. Create a MySQL Database called `bamazon`.
@@ -29,7 +33,12 @@ Create an Amazon-like storefront using MySQL and Inquirer. The app will take in 
 
 4. Populate this database with around 10 different products. (i.e. Insert "mock" data rows into this database and table).
 
+![image](./assets/images/bamazondb_productsTable.JPG)
+
 5. Then create a Node application called `bamazonCustomer.js`. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
+
+![image](./assets/images/displayAll1.JPG)
+![image](./assets/images/displayAll2.JPG)
 
 6. The app should then prompt users with two messages.
 
@@ -40,10 +49,23 @@ Create an Amazon-like storefront using MySQL and Inquirer. The app will take in 
 
    * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
 
+   ![image](./assets/images/unsuccessful_purchase.JPG)
+
 8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
    * This means updating the SQL database to reflect the remaining quantity.
    * Once the update goes through, show the customer the total cost of their purchase.
 
-## Reminder
+  ![image](./assets/images/successful_purchase.JPG)
 
-You have to run "npm install" to download the dependencies for this project.
+9. Finally, the customer should be asked if they want to buy something else.
+   * If so, start the process over
+
+    ![image](./assets/images/startOver.JPG)
+
+   * If not, display the highest grossing department and end the connection.
+
+   ![image](./assets/images/highest_grossing_dept.JPG)
+
+
+
+   [Video Demo](https://drive.google.com/file/d/1J5P004c3xvLilCk40YyrlVVMJ9jsxeXt/view)
