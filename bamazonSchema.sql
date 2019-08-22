@@ -30,4 +30,21 @@ VALUES("Red Dead Redemption II", "Games", 35.00, 18);
 INSERT INTO products(product_name, department_name, price, stock_quantity)
 VALUES("Graphic T-shirt", "Clothing", 15.00, 35);
 INSERT INTO products(product_name, department_name, price, stock_quantity)
-VALUES("Socks", "Household Cleaning", 5.00, 200);
+VALUES("Socks", "Clothing", 5.00, 200);
+
+
+CREATE TABLE sales(
+    dept_id INT NOT NULL AUTO_INCREMENT,
+    department_name VARCHAR(50) NOT NULL,
+    revenue DECIMAL(10,2),
+    PRIMARY KEY (dept_id)
+);
+
+INSERT INTO sales(department_name, revenue)
+VALUES("Household Cleaning", 0.00);
+INSERT INTO sales(department_name, revenue)
+VALUES("Movies", 0.00);
+INSERT INTO sales(department_name, revenue)
+VALUES("Games", 0.00);
+INSERT INTO sales(department_name, revenue)
+VALUES("Clothing", 0.00);

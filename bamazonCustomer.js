@@ -10,7 +10,7 @@ database: 'bamazonDB'
 
 connection.connect(function (err) {
     if(err) throw err;
-    console.log('connected as id ' + connection.threadId);
+    //console.log('connected as id ' + connection.threadId);
     findAll();
 });
 
@@ -57,11 +57,11 @@ function purchase(){
         // console.log(res);
 
         if(amount > res[0].stock_quantity){
-            console.log("I'm sorry, there isn't enough for you to buy " + amount + " of " + res[0].product_name);
+            console.log("\nI'm sorry, there isn't enough for you to buy " + amount + " of " + res[0].product_name);
             response.howManyToBuy = 0;
             purchase();
         }else{
-            placeOrder(amount, itemId, res[0].product_name, res[0].price);
+            placeOrder(amount, itemId, res[0].product_name, res[0].price, res[0].department_name);
         }
     });
 
@@ -71,23 +71,50 @@ function purchase(){
     });
 }
 
-function placeOrder(amount, itemId, name, price){
+function placeOrder(amount, itemId, name, price, dept){
     //update the stock quantity of the specified product in the db
     //display the total cost
     let total = Number(price * amount);
+    connection.query("UPDATE sales SET revenue = (revenue + ?) WHERE department_name = ?", [total, dept], function(err, res){
+        if(err) throw err;        
+    });
     connection.query("UPDATE products SET stock_quantity = (stock_quantity -?) WHERE item_id = ?", [amount, itemId], function(err, res){
-        console.log("You are buying " + amount + " of " + name + " for $" + total + ".\n");
+        if(err) throw err;
+        console.log("\nYou are buying " + amount + " of " + name + " for $" + total + ".\n");
         remainingProduct(itemId);
     });
+    
 }
 
 function remainingProduct(itemId){
-    let query = connection.query("SELECT * FROM products WHERE item_id=?", [itemId], function(err, res){
+   connection.query("SELECT * FROM products WHERE item_id=?", [itemId], function(err, res){
         if(err) throw err;
         console.log("Product remaining:\nID: " + res[0].item_id + "\nProduct: " + res[0].product_name + "\nDepartment: " + res[0].department_name + "\nPrice: " + res[0].price + "\nQuantity: " + res[0].stock_quantity + "\n");
 
         end();
     });
+}
+
+function displaySalesFigures(){
+    connection.query("SELECT * FROM sales", function(err, res){
+        if(err) throw err;
+
+        let revArr = [];
+        let deptArr = [];
+        console.log("\n");
+        for (let i = 0; i < res.length; i++) {
+            console.log("Department: " + res[i].department_name + ";  Revenue: $" + res[i].revenue);
+            revArr.push(res[i].revenue);
+            deptArr.push(res[i].department_name);
+        }
+       
+        let temp =  Math.max(...revArr);
+        let position = revArr.indexOf(temp);
+        
+        console.log("\n***Highest Grossing Department: " + deptArr[position] + "***");
+        connection.end();
+    });
+    
 }
 
 function end(){
@@ -104,7 +131,7 @@ function end(){
       if(response.startOver === "yes"){
           findAll();
       }else{
-        connection.end();
+        displaySalesFigures();
       }
     })
     .catch((err) => {
